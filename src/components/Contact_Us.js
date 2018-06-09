@@ -14,6 +14,8 @@ class Contact_Us extends Component {
     
   }
 
+  //Method (onClick): reset state to empty;
+
   render() {
     return (
       <div className="overall_contact_us_container">

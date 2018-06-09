@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { adjustView } from './../ducks/reducer';
 
 class Main_Display_Area extends Component {
 
@@ -21,11 +23,9 @@ class Main_Display_Area extends Component {
             <div className="nav_between_symbol">›</div>
             <p className="breadcrumb_collections_name">x</p>
           </div>
-          
-          <p className="collections_name_header">CollectionsNameHeader</p>
 
           <div className="header_title_and_sort_container">
-            <p className="header_title">HeaderTitle</p>
+            <p className="collections_name_header">x</p>
             <select className="sort_products_drop_down">
               <option>Alphabetically, A-Z</option>
               <option>Alphabetically, Z-A</option>
@@ -55,4 +55,19 @@ class Main_Display_Area extends Component {
 
 }
 
-export default Main_Display_Area;
+function moveFromStoreToProps(state) {
+  return {
+    current_view: state.current_view,
+    products_in_view: state.products_in_view,
+    number_of_pages: state.number_of_pages,
+    current_page: state.current_page
+  }
+}
+
+var outputActions = {
+  adjustView
+}
+
+let connectedApp = connect(moveFromStoreToProps, outputActions);
+
+export default connectedApp(Main_Display_Area);

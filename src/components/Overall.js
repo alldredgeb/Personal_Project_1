@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import search_icon from './../images/search_icon.svg';
 import cart_icon from './../images/cart_icon.svg';
 import simple_logo from './../images/simple_logo.png';
-import { Route, Switch } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, Route, Switch, withRouter } from 'react-router-dom';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { adjustView } from './../ducks/reducer';
 import Main_Display_Area from './Main_Display_Area';
 import Individual_Product_Display from './Individual_Product_Display';
 import Search from './Search';
@@ -15,16 +17,15 @@ import Contact_Us from './Contact_Us';
 import Cart from './Cart';
 
 class Overall extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      search_box_text: ""
-    };
-    
-  }
 
   //Component did mount: get the info on whether anything is in the store from redux)
+  componentDidMount() {
+    axios.get('/api/check_login').then( response => {
+      console.log('check login response', response.data.id);
+      //this.setState({user.info: res.data})
+    })
+  }
+
   //Component did mount: check to see if user is logged in
   //Component did mount: If the user is logged in, set the cart () number  equal to the total number of items in it.
 
@@ -42,10 +43,11 @@ class Overall extends Component {
         <div className="cart_and_login_logout_container">
           <div className="cart_and_item_count_container">
           <Link to="/cart"><img className="cart_icon" src={cart_icon} alt="Cart Icon"/></Link>
-            <p>()</p>
+            <p>({this.props.number_of_products_in_cart})</p>
           </div>
           <div className="login_and_logout_container">
-            <div>login</div><div>logout</div>
+            <a href={process.env.REACT_APP_LOGIN} className="login_link"><div>login</div></a>
+            <a href={process.env.REACT_APP_LOGOUT} className="logout_link"><div>logout</div></a>
           </div>
         </div>
         </header>
@@ -57,16 +59,16 @@ class Overall extends Component {
         <section className="navigation_and_main_display_area">
           <div className="navigation_and_external_links_container">
             <div className="navigation">
-            <Link to="/"><p>Home</p></Link>
-            <Link to="/collections/accessories"><p>Accessories</p></Link>
-            <Link to="/collections/denim"><p>Denim</p></Link>
-            <Link to="/collections/footwear"> <p>Footwear</p></Link>
-            <Link to="/collections/jeans"><p>Jeans</p></Link>
-            <Link to="/collections/outerwear"><p>Outerwear</p></Link>
-            <Link to="/collections/pants"><p>Pants</p></Link>
-            <Link to="/collections/shirts"><p>Shirts</p></Link>
-            <Link to="/collections/t-shirts"><p>T-Shirts</p></Link>
-            <Link to="/collections/shorts"><p>Shorts</p></Link>
+            <Link to="/">{ this.props.current_view === 'Home' ? <p className="bold_nav">Home</p> : <p>Home</p> }</Link>
+            <Link to="/collections/accessories">{ this.props.current_view === 'Accessories' ? <p className="bold_nav">Accessories</p> : <p>Accessories</p> }</Link>
+            <Link to="/collections/denim">{ this.props.current_view === 'Denim' ? <p className="bold_nav">Denim</p> : <p>Denim</p> }</Link>
+            <Link to="/collections/footwear">{ this.props.current_view === 'Footwear' ? <p className="bold_nav">Footwear</p> : <p>Footwear</p> }</Link>
+            <Link to="/collections/jeans">{ this.props.current_view === 'Jeans' ? <p className="bold_nav">Jeans</p> : <p>Jeans</p> }</Link>
+            <Link to="/collections/outerwear">{ this.props.current_view === 'Outerwear' ? <p className="bold_nav">Outerwear</p> : <p>Outerwear</p> }</Link>
+            <Link to="/collections/pants">{ this.props.current_view === 'Pants' ? <p className="bold_nav">Pants</p> : <p>Pants</p> }</Link>
+            <Link to="/collections/shirts">{ this.props.current_view === 'Shirts' ? <p className="bold_nav">Shirts</p> : <p>Shirts</p> }</Link>
+            <Link to="/collections/t-shirts">{ this.props.current_view === 'T-Shirts' ? <p className="bold_nav">T-Shirts</p> : <p>T-Shirts</p> }</Link>
+            <Link to="/collections/shorts">{ this.props.current_view === 'Shorts' ? <p className="bold_nav">Shorts</p> : <p>Shorts</p> }</Link>
             </div>
           </div>
           <div className="main_display_area">
@@ -107,7 +109,7 @@ class Overall extends Component {
             <p>Be in the know</p>
             <p>Sign up for the latest news, offers and styles</p>
             <div className="bitn_input_and_submit_button_container">
-              <input value="Your email"/>
+              <input />
               <button>SUBSCRIBE</button>
             </div>
           </div>
@@ -125,4 +127,18 @@ class Overall extends Component {
   }
 }
 
-export default Overall; 
+function moveFromStoreToProps(state) {
+  return {
+    logged_in: state.logged_in,
+    current_view: state.current_view,
+    number_of_products_in_cart: state.number_of_products_in_cart
+  }
+}
+
+var outputActions = {
+  adjustView
+}
+ 
+let connectedApp = connect(moveFromStoreToProps, outputActions);
+
+export default withRouter(connectedApp(Overall));

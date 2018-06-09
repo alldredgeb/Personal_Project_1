@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import refresh_icon from './../images/refresh_icon.svg';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { adjustView } from './../ducks/reducer';
 
 class Cart extends Component {
 
@@ -68,4 +70,17 @@ class Cart extends Component {
 
 }
 
-export default Cart;
+function moveFromStoreToProps(state) {
+  return {
+    current_view: state.current_view,
+    products_in_cart: state.products_in_cart
+  }
+}
+
+var outputActions = {
+  adjustView
+}
+
+let connectedApp = connect(moveFromStoreToProps, outputActions);
+
+export default connectedApp(Cart);

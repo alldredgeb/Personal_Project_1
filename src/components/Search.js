@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import search_icon_white from './../images/search_icon_white.png';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { adjustView } from './../ducks/reducer';
 
 class Search extends Component {
   constructor(props) {
@@ -52,4 +54,20 @@ class Search extends Component {
 
 }
 
-export default Search;
+function moveFromStoreToProps(state) {
+  return {
+    current_view: state.current_view,
+    products_in_view: state.products_in_view,
+    number_of_pages: state.number_of_pages,
+    current_page: state.current_page,
+    search_text: state.search_text
+  }
+}
+
+var outputActions = {
+  adjustView
+}
+
+let connectedApp = connect(moveFromStoreToProps, outputActions);
+
+export default connectedApp(Search);
