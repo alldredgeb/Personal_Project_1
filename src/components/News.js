@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { adjustView } from './../ducks/reducer';
 
 class News extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      display: false
+    };
+
+  }
 
   render() {
     return (
@@ -9,14 +19,16 @@ class News extends Component {
 
         <header className="news_header">
           <div className="news_breadcrumb">
-            <Link to="/"><p className="news_breadcrumb_link_to_home">Home</p></Link>
+            <Link to="/"><p className="news_breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
             <div className="nav_between_symbol">›</div>
             <p className="news_breadcrumb_description">News</p>
           </div>
         </header>
 
-        <p className="news_name_header">News</p>
+        <p className="news_name_header">News is under construction</p>
 
+        {this.state.display === true ? 
+        <div>
         <div className="news_story_one">
           <p className="news_story_one_header">Reveal the process</p>
           <p className="news_story_one_author_info">Posted by Chris Long on October 30, 2017</p>
@@ -37,6 +49,8 @@ class News extends Component {
           <p className="news_story_three_brief">S.P.C.C value and celebrate the process behind the product. This video pays homage to the skilled hands that create our premium denim collection. Work hard, Stay inspired. </p>
           <p className="news_story_three_link_to_full_story">Read more →</p>
         </div>
+        </div>
+        : null}
 
       </div>
     )
@@ -44,4 +58,16 @@ class News extends Component {
 
 }
 
-export default News;
+function moveFromStoreToProps(state) {
+  return {
+    current_view: state.current_view
+  }
+}
+
+var outputActions = {
+  adjustView
+}
+ 
+let connectedApp = connect(moveFromStoreToProps, outputActions);
+
+export default connectedApp(News);

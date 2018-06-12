@@ -2,11 +2,41 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { adjustView } from './../ducks/reducer';
+import axios from 'axios';
 
 class Individual_Product_Display extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      current_product_displayed: {},
+      all_product_images: [],
+      current_product_image_displayed: '',
+      size_category: '',
+      current_product_in_cart: false
+    };
+    this.changeCurrentImageOnClick = this.changeCurrentImageOnClick.bind(this);
+  }
 
   //Component did mount: get the product images, current image, description, price -  set on Redux state
-  //set state of the current view (Accessories, Denim, etc)
+  componentDidMount() {
+    axios.get(`/api/get_product/${this.props.match.params.id}`).then( response => {
+      // console.log('get individual product response', response.data[0]);
+      this.setState({
+        current_product_displayed: response.data[0],
+        all_product_images: [response.data[0].img_url, response.data[0].img_url_2, response.data[0].img_url_3],
+        current_product_image_displayed: response.data[0].img_url,
+        size_category: response.data[0].size_category
+      })
+    })
+  }
+
+  changeCurrentImageOnClick(value) {
+    this.setState({
+      current_product_image_displayed: value
+    })
+  }
+
   //set state of current product to be displayed
   //Check to see if user is logged in
   //Check to see if the current product is already in the cart
@@ -18,29 +48,33 @@ class Individual_Product_Display extends Component {
 
         <header className="individual_product_header">
           <div className="individual_product_breadcrumb">
-          <Link to="/"><p className="breadcrumb_individual_link_to_home">Home</p></Link>
+          <Link to="/"><p className="breadcrumb_individual_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
+          { this.props.current_view !== 'Home' ? 
+          <div><div className="nav_between_symbol">›</div>
+          <Link to={`/collections/${this.props.current_view.toLowerCase()}`}><p className="breadcrumb_individual_product_description">{this.props.current_view}</p></Link></div> : 
+          null}
             <div className="nav_between_symbol">›</div>
-          <Link to={`/collections/${this.props.current_view.toLowerCase()}`}><p className="breadcrumb_individual_product_description">{this.props.current_view}</p></Link>
-            <div className="nav_between_symbol">›</div>
-            <p className="breadcrumb_individual_product_description">x</p>
+            <p className="breadcrumb_individual_product_description">{this.state.current_product_displayed.description}</p>
           </div>
         </header>
 
         <section className="individual_product_image_and_details_container">
 
-          <img className="individual_product_image" src="" alt="Individual Product"/>
+          <img className="individual_product_image" src={this.state.current_product_image_displayed} alt="Individual Product"/>
 
           <div className="individual_product_details">
-            <p className="individual_product_description">Product Description</p>
-            <p className="individual_product_price">$Product Price</p>
+            <p className="individual_product_description">{this.state.current_product_displayed.description}</p>
+            <p className="individual_product_price">{this.state.current_product_displayed.price}</p>
             <div className="color_and_size_overall_container">
               <div className="color_container">
                 <p className="color_title">Colour</p>
-                <select className="color_drop_down_menu"></select>
-                  <option>x</option>
+                <select className="color_drop_down_menu">
+                  <option>{this.state.current_product_displayed.colour}</option>
+                </select>
               </div>
               <div className="size_container">
                 <p className="size_title">Size</p>
+                {this.state.size_category === '6-11' ? 
                 <select className="six_to_eleven_size_drop_down_menu">
                   <option>6</option>
                   <option>7</option>
@@ -49,6 +83,8 @@ class Individual_Product_Display extends Component {
                   <option>10</option>
                   <option>11</option>
                 </select>
+                : null}
+                {this.state.size_category === '28-38' ? 
                 <select className="twenty_eight_to_thirty_eight_size_drop_down_menu">
                   <option>28</option>
                   <option>29</option>
@@ -62,22 +98,27 @@ class Individual_Product_Display extends Component {
                   <option>37</option>
                   <option>38</option>
                 </select>
+                : null}
+                {this.state.size_category === 'OSFA' ? 
                 <select className="osfa_size_drop_down_menu">
                   <option>OSFA</option>
                 </select>
+                : null}
+                {this.state.size_category === 'S-XL' ? 
                 <select className="s_to_xl_size_drop_down_menu">
                   <option>Small</option>
                   <option>Medium</option>
                   <option>Large</option>
                   <option>X-Large</option>
                 </select>
+                : null}
                 
                 
               </div>
             </div>
 
-            {this.props.current_product_in_cart === false ? 
-             <button className="individual_product_add_to_cart_button">ADD TO CART</button> : 
+            {this.state.current_product_in_cart === false ? 
+             this.props.logged_in ? <button className="individual_product_add_to_cart_button">ADD TO CART</button> : <button className="not_logged_in_button">PLEASE LOG IN</button> : 
              <div className="view_cart_and_continue_shopping_buttons_container">
               <Link to="/cart"><button className="individual_product_view_cart_button">VIEW CART</button></Link>
               <Link to="/"><button className="individual_product_view_continue_shopping_button">CONTINUE SHOPPING</button></Link>
@@ -89,7 +130,9 @@ class Individual_Product_Display extends Component {
         </section>
 
         <section className="alternate_product_images_container">
-          <img src="" alt="product_image_number_x" />
+          <img src={this.state.all_product_images[0]} alt="product_image_number_one" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[0]) }/>
+          <img src={this.state.all_product_images[1]} alt="product_image_number_two" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[1]) }/>
+          <img src={this.state.all_product_images[2]} alt="product_image_number_three" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[2]) }/>
         </section>
 
         </div>
@@ -102,8 +145,6 @@ class Individual_Product_Display extends Component {
     return {
       logged_in: state.logged_in,
       current_view: state.current_view,
-      current_product_displayed: state.current_product_displayed,
-      current_product_image_displayed: state.current_product_image_displayed,
       current_product_in_cart: state.current_product_in_cart
     }
   }

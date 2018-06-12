@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { adjustView } from './../ducks/reducer';
 
 class FAQ extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      display: false
+    };
+
+  }
 
   render() {
     return (
@@ -9,14 +19,16 @@ class FAQ extends Component {
       
         <header className="faq_header">
           <div className="faq_breadcrumb">
-            <Link to="/"><p className="faq_breadcrumb_link_to_home">Home</p></Link>
+            <Link to="/"><p className="faq_breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
             <div className="nav_between_symbol">›</div>
             <p className="faq_breadcrumb_description">FAQ</p>
           </div>
         </header>
 
-        <p className="faq_name_header">Our story</p>
+        <p className="faq_name_header">FAQ is under construction</p>
 
+        {this.state.display === true ? 
+        <div>
         <p className="q1">Do you ship overseas?</p>
         <p className="a1">Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>
 
@@ -37,11 +49,25 @@ class FAQ extends Component {
 
         <p className="q7">Are these Q&As real?</p>
         <p className="a7">No. This is demonstration content, designed to showcase how these page could look with your own content.</p>
-      
+        </div>
+        : null}
+
       </div>
     )
   }
 
 }
 
-export default FAQ;
+function moveFromStoreToProps(state) {
+  return {
+    current_view: state.current_view
+  }
+}
+
+var outputActions = {
+  adjustView
+}
+ 
+let connectedApp = connect(moveFromStoreToProps, outputActions);
+
+export default connectedApp(FAQ);

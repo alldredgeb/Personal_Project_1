@@ -24,7 +24,7 @@ class Search extends Component {
 
         <header className="search_header">
           <div className="search_breadcrumb">
-            <Link to="/"><p className="search_breadcrumb_link_to_home">Home</p></Link>
+            <Link to="/"><p className="search_breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
             <div className="nav_between_symbol">›</div>
             <p className="search_breadcrumb_description">Search</p>
           </div>
@@ -33,8 +33,8 @@ class Search extends Component {
         <p className="search_name_header">Search our store</p>
 
         <div className="input_and_perform_search_button">
-          <input className="search_input_field"/>
-          <img classname="perform_search_clickable_image" src={search_icon_white} alt="Perform Search" />
+          <input className="search_input_field" placeholder="Search"/>
+          <img className="perform_search_clickable_image" src={search_icon_white} alt="Perform Search" />
         </div>
 
         <p className="found_results_sentence">Your search for "x" revealed the following:</p>

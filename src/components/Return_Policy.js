@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { adjustView } from './../ducks/reducer';
 
 class Return_Policy extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      display: false
+    };
+
+  }
 
   render() {
     return (
@@ -9,14 +19,16 @@ class Return_Policy extends Component {
       
         <header className="return_policy_header">
           <div className="return_policy_breadcrumb">
-            <Link to="/"><p className="return_policy_breadcrumb_link_to_home">Home</p></Link>
+            <Link to="/"><p className="return_policy_breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
             <div className="nav_between_symbol">›</div>
             <p className="return_policy_breadcrumb_description">Return policy</p>
           </div>
         </header>
 
-        <p className="return_policy_name_header">Return policy</p> 
+        <p className="return_policy_name_header">Return policy is under construction</p> 
 
+        {this.state.display === true ? 
+        <div>
         <div className="returns_part_one_container">
           <p className="returns_subtitle_one">RETURNS</p>
           <p>Our policy lasts 30 days. If 30 days have gone by since your purchase, unfortunately we can’t offer you a refund or exchange.</p>
@@ -75,6 +87,8 @@ class Return_Policy extends Component {
           <p>Depending on where you live, the time it may take for your exchanged product to reach you, may vary.</p>
           <p>If you are shipping an item over $75, you should consider using a trackable shipping service or purchasing shipping insurance. We don’t guarantee that we will receive your returned item.</p>
         </div>
+        </div>
+        : null}
       
       </div>
     )
@@ -82,4 +96,16 @@ class Return_Policy extends Component {
 
 }
 
-export default Return_Policy;
+function moveFromStoreToProps(state) {
+  return {
+    current_view: state.current_view
+  }
+}
+
+var outputActions = {
+  adjustView
+}
+ 
+let connectedApp = connect(moveFromStoreToProps, outputActions);
+
+export default connectedApp(Return_Policy);

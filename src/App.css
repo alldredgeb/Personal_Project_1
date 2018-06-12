@@ -1,0 +1,172 @@
+/* ///// */
+/* Fonts */
+/* ///// */
+/* font-family: "HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif */
+
+/* ////////////////////// */
+/* CSS for all Components */
+/* ////////////////////// */
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+a:visited {
+  color: black;
+}
+
+/* ///////////////////////// */
+/* CSS for Overall Component */
+/* ///////////////////////// */
+.overall_container {
+  border-top: 5px solid black;
+  padding: 0 40px;
+}
+
+.everything_below_the_very_top {
+  margin: auto;
+  max-width: 1250px;
+}
+
+.overall_header {
+  
+  height: 52px;
+  width: 100%;
+  display: flex;
+}
+
+.search_container {
+  width: 18%;
+  display: flex;
+  align-items: center;
+}
+
+.search_icon {
+  width: 27px;
+  height: 34px;
+  margin-left: 7px;
+  margin-right: 7px;
+}
+
+/* .search_icon_text {
+
+} */
+
+.cart_and_login_logout_container {
+  width: 82%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.cart_and_item_count_container {
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cart_icon {
+  width: 20px;
+  height: 20px;
+  margin-top: 5px;
+}
+
+.item_count {
+  margin: 0px 0px 0px 5px;
+}
+
+.login_and_logout_container {
+  margin-left: 10px;
+}
+
+.brand_logo_bar {
+  border-top: 1px solid #e8e8e8;
+  height: 140px;
+  display: flex;
+  align-items: center;
+}
+
+.navigation_and_main_display_area {
+  width: 100%;
+  display: flex;
+}
+
+.navigation_and_external_links_container {
+  width: 20%;
+}
+
+.main_display_area {
+  width: 80%;
+}
+
+.main_display_area_overall {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product_box {
+  max-width: 33%;
+  margin: auto;
+}
+
+.product_image {
+  max-width: 303.3px;
+  max-height: 303.3px;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+}
+
+.navigation p {
+  height: 20px;
+  border-top: 1px solid #e8e8e8;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin: 0px;
+}
+
+.main_display_area_header {
+  display: none;
+}
+
+.pagination_overall_container {
+  display: flex;
+  justify-content: center;
+}
+
+
+/* //////////////////////////////// */
+/* CSS for Home - Shorts Components */
+/* //////////////////////////////// */
+
+/* //////////////////////////////////////////// */
+/* CSS for Individual Product Display Component */
+/* //////////////////////////////////////////// */
+
+/* //////////////////////// */
+/* CSS for Search Component */
+/* //////////////////////// */
+
+/* ////////////////////// */
+/* CSS for News Component */
+/* ////////////////////// */
+
+/* /////////////////////////// */
+/* CSS for Our Story Component */
+/* /////////////////////////// */
+
+/* ///////////////////// */
+/* CSS for FAQ Component */
+/* ///////////////////// */
+
+/* /////////////////////////////// */
+/* CSS for Return Policy Component */
+/* /////////////////////////////// */
+
+/* //////////////////////////// */
+/* CSS for Contact Us Component */
+/* //////////////////////////// */
