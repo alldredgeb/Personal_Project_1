@@ -79,6 +79,7 @@ getOtherProducts() {
           <div className="header_title_and_sort_container">
             <p className="collections_name_header">x</p>
             <select className="sort_products_drop_down">
+              <option>Featured</option>
               <option>Alphabetically, A-Z</option>
               <option>Alphabetically, Z-A</option>
               <option>Price, low to high</option>

@@ -25,7 +25,7 @@ a:visited {
 
 .everything_below_the_very_top {
   margin: auto;
-  max-width: 1250px;
+  max-width: 1220px;
 }
 
 .overall_header {
@@ -129,9 +129,8 @@ a:visited {
   margin: 0px;
 }
 
-.main_display_area_header {
-  display: none;
-}
+/* .main_display_area_header {
+} */
 
 .pagination_overall_container {
   display: flex;

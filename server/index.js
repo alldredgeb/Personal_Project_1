@@ -69,7 +69,17 @@ passport.deserializeUser((id, done) => {
 
 //ENDPOINTS
 /////Create/////
-//app.post('/api/add_to_cart’)
+app.post('/api/add_item_to_cart', (req, res) => {
+  console.log('items on req.body', req.body);
+  app.get('db').add_item_to_cart(
+    req.body.customer_id, req.body.product_id, req.body.img_url, req.body.description, req.body.price, req.body.colour, req.body.size, req.body.quantity, req.body.purchased
+  ).then( addItemToCartResponse => {
+    res.status(200).send("Item added to cart successfully!")
+  }).catch( error => {
+    console.log('add item to cart query error', error);
+    res.status(500).send(error);
+  })
+})
 
 /////Read/////
 app.get('/api/auth/login', passport.authenticate('auth0', {
@@ -132,7 +142,26 @@ app.get('/api/get_product/:id', (req, res) => {
   app.get('db').get_individual_product(req.params.id).then( individualProductResponse => {
     res.status(200).send(individualProductResponse)
   }).catch( error => {
-    console.log( 'get individual product query error', error);
+    console.log('get individual product query error', error);
+    res.status(500).send(error);
+  })
+})
+
+app.get('/api/check_cart_for_item/:id', (req, res) => {
+  app.get('db').check_cart_for_item(req.params.id).then( checkCartForItemResponse => {
+    console.log('check cart for item results', checkCartForItemResponse);
+    res.status(200).send(checkCartForItemResponse);
+  }).catch( error => {
+    console.log('check cart for item query error', error);
+    res.status(500).send(error);
+  })
+})
+
+app.get('/api/get_products_in_cart', (req, res) => {
+  app.get('db').get_products_in_cart(req.user.id).then( productsInCartResponse => {
+    res.status(200).send(productsInCartResponse)
+  }).catch( error => {
+    console.log('get products in cart query error', error);
     res.status(500).send(error);
   })
 })
@@ -140,11 +169,29 @@ app.get('/api/get_product/:id', (req, res) => {
 //app.get(‘/api/search’) (user url query)
 
 /////Update/////
-//app.put('/api/update_quantity/:id') (carry amount on body)
+app.put('/api/update_quantity', (req, res) => {
+  app.get('db').update_quantity(
+    req.body.quantity, req.body.total, req.user.id, req.body.product_id
+  ).then( response => {
+    res.status(200).send(response)
+  }).catch( error => {
+    console.log('update quantity error', error);
+    res.status(500).send(error);
+  })
+})
+
+
 //app.put('/api/finish_check_out') (have a purchased column say ‘true’)
 
 /////Delete/////
-//app.delete('/api/delete_from_cart/:id')
+app.delete('/api/delete_from_cart/:id', (req, res) => {
+  app.get('db').delete_from_cart(req.user.id, req.params.id).then( response => {
+    res.status(200).send('Item removed!')
+  }).catch ( error => {
+    console.log('remove item query error', error);
+    res.status(500).send(error);
+  })
+})
 
 //LISTEN
 app.listen(port, () => console.log(`listening on port ${port}!`));

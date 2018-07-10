@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { adjustView } from './../ducks/reducer';
+import { adjustView, addCartItemCount } from './../ducks/reducer';
 import axios from 'axios';
 
 class Individual_Product_Display extends Component {
@@ -13,9 +13,13 @@ class Individual_Product_Display extends Component {
       all_product_images: [],
       current_product_image_displayed: '',
       size_category: '',
+      selected_colour: '',
+      selected_size: '',
       current_product_in_cart: false
     };
     this.changeCurrentImageOnClick = this.changeCurrentImageOnClick.bind(this);
+    this.updateSizeOnChange = this.updateSizeOnChange.bind(this);
+    this.addToCart = this.addToCart.bind(this);
   }
 
   //Component did mount: get the product images, current image, description, price -  set on Redux state
@@ -26,7 +30,16 @@ class Individual_Product_Display extends Component {
         current_product_displayed: response.data[0],
         all_product_images: [response.data[0].img_url, response.data[0].img_url_2, response.data[0].img_url_3],
         current_product_image_displayed: response.data[0].img_url,
-        size_category: response.data[0].size_category
+        size_category: response.data[0].size_category,
+        selected_colour: response.data[0].colour
+      })
+      if(this.state.size_category === '6-11') {this.setState({selected_size: '6'})}
+      if(this.state.size_category === '28-38') {this.setState({selected_size: '28'})}
+      if(this.state.size_category === 'OSFA') {this.setState({selected_size: 'OSFA'})}
+      if(this.state.size_category === 'S-XL') {this.setState({selected_size: 'Small'})}
+      console.log('individual item state', this.state);
+      axios.get(`/api/check_cart_for_item/${this.props.match.params.id}`).then ( response => {
+        if(response.data[0]) {this.setState({current_product_in_cart: true})}
       })
     })
   }
@@ -34,6 +47,36 @@ class Individual_Product_Display extends Component {
   changeCurrentImageOnClick(value) {
     this.setState({
       current_product_image_displayed: value
+    })
+  }
+
+  updateSizeOnChange(event) {
+    this.setState({
+      selected_size: event.target.value
+    })
+  }
+
+  addToCart(event) {
+    axios.post('/api/add_item_to_cart', {
+      customer_id: this.props.userInfo.id,
+      product_id: this.props.match.params.id,
+      img_url: this.state.all_product_images[0],
+      description: this.state.current_product_displayed.description,
+      price: this.state.current_product_displayed.price,
+      colour: this.state.selected_colour,
+      size: this.state.selected_size,
+      quantity: 1,
+      purchased: false
+    }).then( response => {
+      console.log('add to cart response', response);
+      this.setState({
+        current_product_in_cart: true
+      })
+      axios.get('/api/get_cart_item_count').then( cartItemCountResponse => {
+        this.props.addCartItemCount(cartItemCountResponse.data);
+      })
+    }).catch( response => {
+      console.log('add to cart error response', response);
     })
   }
 
@@ -75,7 +118,7 @@ class Individual_Product_Display extends Component {
               <div className="size_container">
                 <p className="size_title">Size</p>
                 {this.state.size_category === '6-11' ? 
-                <select className="six_to_eleven_size_drop_down_menu">
+                <select className="six_to_eleven_size_drop_down_menu" onChange={this.updateSizeOnChange}>
                   <option>6</option>
                   <option>7</option>
                   <option>8</option>
@@ -85,7 +128,7 @@ class Individual_Product_Display extends Component {
                 </select>
                 : null}
                 {this.state.size_category === '28-38' ? 
-                <select className="twenty_eight_to_thirty_eight_size_drop_down_menu">
+                <select className="twenty_eight_to_thirty_eight_size_drop_down_menu" onChange={this.updateSizeOnChange}>
                   <option>28</option>
                   <option>29</option>
                   <option>30</option>
@@ -105,7 +148,7 @@ class Individual_Product_Display extends Component {
                 </select>
                 : null}
                 {this.state.size_category === 'S-XL' ? 
-                <select className="s_to_xl_size_drop_down_menu">
+                <select className="s_to_xl_size_drop_down_menu" onChange={this.updateSizeOnChange}>
                   <option>Small</option>
                   <option>Medium</option>
                   <option>Large</option>
@@ -118,7 +161,7 @@ class Individual_Product_Display extends Component {
             </div>
 
             {this.state.current_product_in_cart === false ? 
-             this.props.logged_in ? <button className="individual_product_add_to_cart_button">ADD TO CART</button> : <button className="not_logged_in_button">PLEASE LOG IN</button> : 
+             this.props.logged_in ? <button className="individual_product_add_to_cart_button" onClick={this.addToCart}>ADD TO CART</button> : <button className="not_logged_in_button">PLEASE LOG IN</button> : 
              <div className="view_cart_and_continue_shopping_buttons_container">
               <Link to="/cart"><button className="individual_product_view_cart_button">VIEW CART</button></Link>
               <Link to="/"><button className="individual_product_view_continue_shopping_button">CONTINUE SHOPPING</button></Link>
@@ -144,13 +187,15 @@ class Individual_Product_Display extends Component {
   function moveFromStoreToProps(state) {
     return {
       logged_in: state.logged_in,
+      userInfo: state.userInfo,
       current_view: state.current_view,
       current_product_in_cart: state.current_product_in_cart
     }
   }
 
   var outputActions = {
-    adjustView
+    adjustView,
+    addCartItemCount
   }
 
   let connectedApp = connect(moveFromStoreToProps, outputActions);

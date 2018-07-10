@@ -44,7 +44,11 @@ class Overall extends Component {
     axios.get('/api/get_all_user_info').then( userInfoResponse => {
       this.props.userInfoToRedux(userInfoResponse.data);
       axios.get('/api/get_cart_item_count').then( cartItemCountResponse => {
-        this.props.addCartItemCount(cartItemCountResponse.data);
+        if(cartItemCountResponse.data < 1) {
+          this.props.addCartItemCount(0);
+        } else {
+          this.props.addCartItemCount(cartItemCountResponse.data);
+        }
       })
     })
   }
