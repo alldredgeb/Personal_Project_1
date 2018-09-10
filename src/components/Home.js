@@ -20,14 +20,12 @@ class Home extends Component {
 //Component did mount: find out how many pages of items will be displayed, set on local state
 componentDidMount() {
   axios.get(`/api/get_products/Home`).then( response => {
-    console.log('get products response', response.data)
     this.props.addProducts(response.data);
     axios.get('/api/check_number_of_pages/Home').then( response => {
       let pagesArray = [];
       for (var i = 1; i <= Math.ceil(response.data[0].count / 9); i++) {
         pagesArray.push(i);
       }
-      console.log('pageArray', pagesArray);
       this.setState({
         pages_array: pagesArray
       })
@@ -47,7 +45,6 @@ changePages(new_page_number) {
 getOtherProducts() {
   let offset = (this.state.page_number - 1) * 9;
   axios.get(`/api/get_other_products/Home/${offset}`).then( otherProductsResponse => {
-    console.log('get other products results', otherProductsResponse);
     this.props.addProducts(otherProductsResponse.data);
   })
 }

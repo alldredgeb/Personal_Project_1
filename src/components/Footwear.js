@@ -10,7 +10,9 @@ class Footwear extends Component {
 
     this.state = {
       pages_array: [],
-      page_number: 1
+      page_number: 1,
+      search_criteria: 'featured',
+      display_search: false
     };
     this.changePages = this.changePages.bind(this);
     this.getOtherProducts = this.getOtherProducts.bind(this);
@@ -20,14 +22,12 @@ class Footwear extends Component {
 //Component did mount: find out how many pages of items will be displayed, set on local state
 componentDidMount() {
   axios.get(`/api/get_products/Footwear`).then( response => {
-    console.log('get products response', response.data)
     this.props.addProducts(response.data);
     axios.get('/api/check_number_of_pages/Footwear').then( response => {
       let pagesArray = [];
       for (var i = 1; i <= Math.ceil(response.data[0].count / 9); i++) {
         pagesArray.push(i);
       }
-      console.log('pageArray', pagesArray);
       this.setState({
         pages_array: pagesArray
       })
@@ -47,7 +47,6 @@ changePages(new_page_number) {
 getOtherProducts() {
   let offset = (this.state.page_number - 1) * 9;
   axios.get(`/api/get_other_products/Footwear/${offset}`).then( otherProductsResponse => {
-    console.log('get other products results', otherProductsResponse);
     this.props.addProducts(otherProductsResponse.data);
   })
 }
@@ -72,18 +71,18 @@ getOtherProducts() {
           </div>: 
           null}
 
-        {this.props.current_view !== 'Home' ?
           <div className="header_title_and_sort_container">
-            <p className="collections_name_header">x</p>
-            <select className="sort_products_drop_down">
-              <option>Featured</option>
-              <option>Alphabetically, A-Z</option>
-              <option>Alphabetically, Z-A</option>
-              <option>Price, low to high</option>
-              <option>Price, high to low</option>
-            </select>
-          </div>:
-        null}
+            <p className="collections_name_header">{this.props.current_view}</p>
+            {this.props.current_view !== 'Home' && this.state.display_search ?
+              <select className="sort_products_drop_down">
+                <option value='featured' >Featured</option>
+                <option value='a_z' >Alphabetically, A-Z</option>
+                <option value='z_a' >Alphabetically, Z-A</option>
+                <option value='low_high' >Price, low to high</option>
+                <option value='high_low'>Price, high to low</option>
+              </select> : 
+            null}
+          </div>
 
         </header>
 

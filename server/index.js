@@ -41,7 +41,6 @@ passport.use(new Auth0Strategy(
     //then, if they do exist, pass their id into 'done': done(null, id)
     //if they do not exist, create the user in the db and then pass their id into done(null, id)
     app.get('db').check_user(profile.id).then( checkUserResults => {
-      console.log('check user', checkUserResults);
       if(checkUserResults[0]) {
         done(null, checkUserResults[0].id);
       } else {
@@ -55,12 +54,10 @@ passport.use(new Auth0Strategy(
 
 //serializeUser sets the cookie that will be stored in the front end
 passport.serializeUser((id, done) => {
-  console.log('serialize', id);
   done(null, id);
 });
 //deserializeUser takes the cookie from the front end and decides what will be accessible on sessions
 passport.deserializeUser((id, done) => {
-  console.log('deserialize', id);
   // db query to get all the user's information using the id, and pass that returning information into done
   app.get('db').get_user_info(id).then( getUserResults => {
     done(null, getUserResults[0]);
@@ -70,7 +67,6 @@ passport.deserializeUser((id, done) => {
 //ENDPOINTS
 /////Create/////
 app.post('/api/add_item_to_cart', (req, res) => {
-  console.log('items on req.body', req.body);
   app.get('db').add_item_to_cart(
     req.body.customer_id, req.body.product_id, req.body.img_url, req.body.description, req.body.price, req.body.colour, req.body.size, req.body.quantity, req.body.purchased
   ).then( addItemToCartResponse => {
@@ -94,7 +90,7 @@ app.get('/api/auth/logout', (req, res) => {
 
 app.get('/api/get_all_user_info', (req, res) => {
   if(req.user) {
-    console.log('session', req.user);
+    // console.log('session', req.user);
     res.status(200).send(req.user)
   } else {
     return res.status(403).send("User not logged in.");
@@ -149,7 +145,6 @@ app.get('/api/get_product/:id', (req, res) => {
 
 app.get('/api/check_cart_for_item/:id', (req, res) => {
   app.get('db').check_cart_for_item(req.params.id).then( checkCartForItemResponse => {
-    console.log('check cart for item results', checkCartForItemResponse);
     res.status(200).send(checkCartForItemResponse);
   }).catch( error => {
     console.log('check cart for item query error', error);
@@ -166,7 +161,33 @@ app.get('/api/get_products_in_cart', (req, res) => {
   })
 })
 
+app.get('/api/get_cart_items_subtotal', (req, res) => {
+  app.get('db').get_cart_items_subtotal(req.user.id).then( cartItemsSubtotal => {
+    res.status(200).send(cartItemsSubtotal)
+  }).catch( error => {
+    console.log('get subtotal of cart items query error', error);
+    res.status(500).send(error);
+  })
+})
+
+app.put(`/api/checkout`, (req, res) => {
+  app.get('db').checkout(req.user.id).then( () => {
+    res.status(200).send('Checkout successful!')
+  }).catch( error => {
+    console.log('checkout error', error);
+    res.status(500).send(error);
+  })
+})
+
 //app.get(‘/api/search’) (user url query)
+app.get(`/api/search`, (req, res) => {
+  app.get('db').product_search(req.query.search_box_text).then(response => {
+    res.status(200).send(response);
+  }).catch( error => {
+    console.log('product search error', error);
+    res.status(500).send(error);
+  })
+})
 
 /////Update/////
 app.put('/api/update_quantity', (req, res) => {

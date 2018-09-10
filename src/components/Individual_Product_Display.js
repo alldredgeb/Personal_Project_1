@@ -25,7 +25,6 @@ class Individual_Product_Display extends Component {
   //Component did mount: get the product images, current image, description, price -  set on Redux state
   componentDidMount() {
     axios.get(`/api/get_product/${this.props.match.params.id}`).then( response => {
-      // console.log('get individual product response', response.data[0]);
       this.setState({
         current_product_displayed: response.data[0],
         all_product_images: [response.data[0].img_url, response.data[0].img_url_2, response.data[0].img_url_3],
@@ -37,7 +36,6 @@ class Individual_Product_Display extends Component {
       if(this.state.size_category === '28-38') {this.setState({selected_size: '28'})}
       if(this.state.size_category === 'OSFA') {this.setState({selected_size: 'OSFA'})}
       if(this.state.size_category === 'S-XL') {this.setState({selected_size: 'Small'})}
-      console.log('individual item state', this.state);
       axios.get(`/api/check_cart_for_item/${this.props.match.params.id}`).then ( response => {
         if(response.data[0]) {this.setState({current_product_in_cart: true})}
       })
@@ -68,7 +66,6 @@ class Individual_Product_Display extends Component {
       quantity: 1,
       purchased: false
     }).then( response => {
-      console.log('add to cart response', response);
       this.setState({
         current_product_in_cart: true
       })

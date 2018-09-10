@@ -67,7 +67,6 @@ class Overall extends Component {
 
   getProducts() {
    axios.get(`/api/get_products/${this.props.current_view}`).then( response => {
-    console.log('get products response', response.data)
       this.props.addProducts(response.data)
     })
   }
@@ -81,7 +80,7 @@ class Overall extends Component {
       <header className="overall_header">
         <div className="search_container">
         <Link to="/search"><img className="search_icon" src={search_icon} alt="Search Icon"/></Link>
-          <p className="search_icon_text">Search</p>
+        <Link to="/search"><p className="search_icon_text">Search</p></Link>
         </div>
         <div className="cart_and_login_logout_container">
           <div className="cart_and_item_count_container">

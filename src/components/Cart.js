@@ -12,9 +12,12 @@ class Cart extends Component {
     this.state = {
       product_modifying: 0,
       product_price: 0,
-      quantity: 0
+      quantity: 0,
+      subtotal: 0,
+      checked_out: false
     }
     this.getProductsInCart = this.getProductsInCart.bind(this);
+    this.getCartItemsSubtotal = this.getCartItemsSubtotal.bind(this);
     this.getCartItemCount = this.getCartItemCount.bind(this);
     this.updateQuantityOnChange = this.updateQuantityOnChange.bind(this);
     this.deleteFromCartOnClick = this.deleteFromCartOnClick.bind(this);
@@ -22,12 +25,22 @@ class Cart extends Component {
 
   componentDidMount() {
     this.getProductsInCart();
+    this.getCartItemsSubtotal();
   }
 
   getProductsInCart() {
     axios.get('/api/get_products_in_cart').then( productsInCartResponse => {
-      console.log('products from cart response', productsInCartResponse.data);
       this.props.loadCartContents(productsInCartResponse.data);
+    })
+  }
+
+  getCartItemsSubtotal() {
+    axios.get(`/api/get_cart_items_subtotal`).then( subtotalResponse => {
+      this.setState({
+        subtotal: subtotalResponse.data[0].sum
+      })
+    }).catch( error => {
+      console.log('subtotal info error', error);
     })
   }
 
@@ -42,16 +55,14 @@ class Cart extends Component {
   }
 
   updateQuantityOnChange(event, product_id, product_price) {
-    console.log('event data', event)
+    // console.log('event data', event)
     let item_price = product_price.replace(/[^\d.]/g, '');
-    let product = parseInt(item_price) * parseInt(event.target.value);
+    let product = parseInt(item_price, 10) * parseInt(event.target.value, 10);
     let item_total = (product).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     axios.put(`/api/update_quantity`, {
       quantity: +event.target.value,
       total: item_total,
       product_id: product_id
-    }).then( response => {
-      console.log('update_quantity response', response);
     }).then( () => {
       this.getProductsInCart();
     }).catch( error => {
@@ -71,6 +82,20 @@ class Cart extends Component {
     })
   }
 
+  cartCheckout() {
+    axios.put(`/api/checkout`).then( response => {
+      this.setState({
+        subtotal: 0,
+        checked_out: true
+      })
+    }).then( () => {
+      this.getProductsInCart();
+      this.getCartItemCount();
+    }).catch( error => {
+      console.log('checkout error bob', error)
+    })
+  }
+
   render() {
     return (
       <div className="overall_cart_container">
@@ -79,11 +104,11 @@ class Cart extends Component {
           <div className="cart_breadcrumb">
             <Link to="/"><p className="cart_breadcrumb_link_to_home">Home</p></Link>
             <div className="nav_between_symbol">›</div>
-            <p className="cart_breadcrumb_description">Cart</p>
+            <p className="cart_breadcrumb_description">Your Shopping Cart</p>
           </div>
         </header>
         
-        {this.props.products_in_cart[0] ? null :
+        {this.props.products_in_cart[0] || this.state.checked_out ? null :
         <div>
           <p className="cart_name_header">Shopping Cart</p>
           <p>Your cart is currently empty.</p>
@@ -101,6 +126,13 @@ class Cart extends Component {
           </div>
         </div>
         }
+
+         {!this.state.checked_out ? null :
+        <div>
+          <p>Thank you for your purchase!</p>
+          <p>If you wish to continue browsing, click <Link to="/">here.</Link></p>
+        </div>
+         }
 
         {this.props.products_in_cart.map ( obj => {
           return (
@@ -129,13 +161,12 @@ class Cart extends Component {
             <textarea className="special_instructions_message_textarea"></textarea>
           </div>
           <div className="subtotal_and_buttons_container">
-            <p>Subtotal $x</p>
-            <p>Shipping & taxes calculated at checkout</p>
+            <p>Subtotal {this.state.subtotal}</p>
             <div className="refresh_and_redirect_buttons_container">
-              <img className="refresh_icon" src={refresh_icon} alt="Refresh Icon"/>
+              <img className="refresh_icon" src={refresh_icon} alt="Refresh Icon" onClick={ () => this.getCartItemsSubtotal() }/>
               <Link to="/"><button>CONTINUE SHOPPING</button></Link>
             </div>
-            <Link to="/"><button>CHECK OUT</button></Link>
+            <button onClick={ () => this.cartCheckout() }>CHECK OUT</button>
           </div>
         </div>
         }
