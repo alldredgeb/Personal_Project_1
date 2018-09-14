@@ -66,9 +66,9 @@ getOtherProducts() {
             <div key={obj.id} className="product_box">
               <Link to={`/product/${obj.id}`}><img className="product_image" src={obj.img_url} alt="Product" /></Link>
               <Link to={`/product/${obj.id}`}><p className="product_description">{obj.description}</p></Link>
-            <p className="product_price">{obj.price}</p>
-          </div>
-          )
+              <p className="product_price">{obj.price}</p>
+            </div>
+            )
         })}
 
         </section>

@@ -8,7 +8,7 @@ class News extends Component {
     super(props);
 
     this.state = {
-      display: false
+      display: true
     };
 
   }
@@ -25,31 +25,12 @@ class News extends Component {
           </div>
         </header>
 
-        <p className="news_name_header">News is under construction</p>
-
         {this.state.display === true ? 
-        <div>
-        <div className="news_story_one">
-          <p className="news_story_one_header">Reveal the process</p>
-          <p className="news_story_one_author_info">Posted by Chris Long on October 30, 2017</p>
-          <p className="news_story_one_brief">S.P.C.C value and celebrate the process behind the product. This video pays homage to the skilled hands that create our premium denim collection. Work hard, Stay inspired. </p>
-          <p className="news_story_one_link_to_full_story">Read more →</p>
-        </div>
-
-        <div className="news_story_two">
-          <p className="news_story_two_header">Reveal the process</p>
-          <p className="news_story_two_author_info">Posted by Chris Long on October 30, 2017</p>
-          <p className="news_story_two_brief">S.P.C.C value and celebrate the process behind the product. This video pays homage to the skilled hands that create our premium denim collection. Work hard, Stay inspired. </p>
-          <p className="news_story_two_link_to_full_story">Read more →</p>
-        </div>
-
-        <div className="news_story_three">
-          <p className="news_story_three_header">Reveal the process</p>
-          <p className="news_story_three_author_info">Posted by Chris Long on October 30, 2017</p>
-          <p className="news_story_three_brief">S.P.C.C value and celebrate the process behind the product. This video pays homage to the skilled hands that create our premium denim collection. Work hard, Stay inspired. </p>
-          <p className="news_story_three_link_to_full_story">Read more →</p>
-        </div>
-        </div>
+          <div className="news_story_one">
+            <p className="news_story_one_header">Keeping you in the know</p>
+            <p className="news_story_one_author_info">Posted by Benjamin Alldredge on September 14, 2018</p>
+            <p className="news_story_one_brief">We do not have any news as of yet! However, we will post new stories here as they become available. Check back later for the latest!</p>
+          </div>
         : null}
 
       </div>

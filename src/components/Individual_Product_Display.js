@@ -87,21 +87,32 @@ class Individual_Product_Display extends Component {
         <div className="individual_product_overall_container">
 
         <header className="individual_product_header">
-          <div className="individual_product_breadcrumb">
-          <Link to="/"><p className="breadcrumb_individual_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
+          <div className="breadcrumb_main">
+          <Link to="/"><p className="individual_breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
           { this.props.current_view !== 'Home' ? 
-          <div><div className="nav_between_symbol">›</div>
-          <Link to={`/collections/${this.props.current_view.toLowerCase()}`}><p className="breadcrumb_individual_product_description">{this.props.current_view}</p></Link></div> : 
-          null}
-            <div className="nav_between_symbol">›</div>
-            <p className="breadcrumb_individual_product_description">{this.state.current_product_displayed.description}</p>
+          <div className="nav_1_and_collections_name_container">
+          <div className="individual_nav_between_symbol_1">›</div>
+            <Link to={`/collections/${this.props.current_view.toLowerCase()}`}><p className="individual_breadcrumb_collections_name">{this.props.current_view}</p></Link>
+          </div> 
+          : null}
+            <div className="individual_nav_between_symbol_2">›</div>
+            <p className="individual_breadcrumb_product_description">{this.state.current_product_displayed.description}</p>
           </div>
         </header>
 
-        <section className="individual_product_image_and_details_container">
+        <section className="individual_and_alternate_product_images_container">
+          <div className="individual_product_image_container">
+            <img className="individual_product_image" src={this.state.current_product_image_displayed} alt="Individual Product"/>
+          </div>
 
-          <img className="individual_product_image" src={this.state.current_product_image_displayed} alt="Individual Product"/>
+          <div className="alternate_product_images_container">
+            <img className="alternate_product_image" src={this.state.all_product_images[0]} alt="product_image_number_one" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[0]) }/>
+            <img className="alternate_product_image" src={this.state.all_product_images[1]} alt="product_image_number_two" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[1]) }/>
+            <img className="alternate_product_image" src={this.state.all_product_images[2]} alt="product_image_number_three" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[2]) }/>
+          </div>
+        </section>
 
+        <section className="individual_product_details_container">
           <div className="individual_product_details">
             <p className="individual_product_description">{this.state.current_product_displayed.description}</p>
             <p className="individual_product_price">{this.state.current_product_displayed.price}</p>
@@ -166,13 +177,6 @@ class Individual_Product_Display extends Component {
             }
 
           </div>
-
-        </section>
-
-        <section className="alternate_product_images_container">
-          <img src={this.state.all_product_images[0]} alt="product_image_number_one" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[0]) }/>
-          <img src={this.state.all_product_images[1]} alt="product_image_number_two" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[1]) }/>
-          <img src={this.state.all_product_images[2]} alt="product_image_number_three" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[2]) }/>
         </section>
 
         </div>

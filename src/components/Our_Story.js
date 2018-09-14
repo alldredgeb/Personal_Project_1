@@ -9,7 +9,7 @@ class Our_Story extends Component {
     super(props);
 
     this.state = {
-      display: false
+      display: true
     };
 
   }
@@ -25,8 +25,6 @@ class Our_Story extends Component {
             <p className="our_story_breadcrumb_description">Our story</p>
           </div>
         </header>
-
-        <p className="our_story_name_header">Our story is under construction</p>
 
         {this.state.display === true ? 
         <div>

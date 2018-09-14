@@ -50,14 +50,16 @@ class Search extends Component {
       <div className="overall_search_container">
 
         <header className="search_header">
-          <div className="search_breadcrumb">
-            <Link to="/"><p className="search_breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
+          <div className="breadcrumb_main">
+            <Link to="/"><p className="breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
             <div className="nav_between_symbol">›</div>
-            <p className="search_breadcrumb_description">Search</p>
+            <p className="breadcrumb_collections_name">Search</p>
           </div>
         </header>
 
-        <p className="search_name_header">{this.state.search_name_header}</p>
+        <div className="search_title_container">
+          <p className="search_name_header">{this.state.search_name_header}</p>
+        </div>
 
         {this.state.search_performed ? null : 
         <div className="input_and_perform_search_button">

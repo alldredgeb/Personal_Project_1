@@ -30,11 +30,14 @@ class Overall extends Component {
     super(props);
 
     this.state = {
-      email: ''
+      email: '',
+      open: false
     }
     this.handleEmailInput = this.handleEmailInput.bind(this);
     this.handleClickOfSubmit = this.handleClickOfSubmit.bind(this);
     this.getProducts = this.getProducts.bind(this);
+    this.expandMenu = this.expandMenu.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
   }
 
   //Component did mount: get the info on whether anything is in the store from redux)
@@ -71,6 +74,18 @@ class Overall extends Component {
     })
   }
 
+  expandMenu() {
+    this.setState({
+      open: !this.state.open,
+    })
+  }
+
+  closeMenu() {
+    this.setState({
+      open: false
+    })
+  }
+
   render() {
     return (
       <div className="overall_container">
@@ -79,12 +94,12 @@ class Overall extends Component {
 
       <header className="overall_header">
         <div className="search_container">
-        <Link to="/search"><img className="search_icon" src={search_icon} alt="Search Icon"/></Link>
-        <Link to="/search"><p className="search_icon_text">Search</p></Link>
+        <Link to="/search"><img className="search_icon" src={search_icon} alt="Search Icon" onClick={ () => {this.props.adjustView('Search'); this.closeMenu();} }/></Link>
+        <Link to="/search"><p className="search_icon_text" onClick={ () => {this.props.adjustView('Search'); this.closeMenu();} }>Search</p></Link>
         </div>
         <div className="cart_and_login_logout_container">
           <div className="cart_and_item_count_container">
-          <Link to="/cart"><img className="cart_icon" src={cart_icon} alt="Cart Icon"/></Link>
+          <Link to="/cart"><img className="cart_icon" src={cart_icon} alt="Cart Icon" onClick={ () => {this.props.adjustView('Cart'); this.closeMenu();} }/></Link>
             <p className="item_count">({this.props.cart_item_count})</p>
           </div>
           <div className="login_and_logout_container">
@@ -96,22 +111,45 @@ class Overall extends Component {
       </header>
 
         <section className="brand_logo_bar">
-          <Link to="/"><img className="simple_logo" src={simple_logo} alt="Simple Logo" onClick={ () => this.props.adjustView('Home') }/></Link>
+          <Link to="/"><img className="simple_logo" src={simple_logo} alt="Simple Logo" onClick={ () => {this.props.adjustView('Home'); this.closeMenu();} }/></Link>
         </section>
 
         <section className="navigation_and_main_display_area">
-          <div className="navigation_and_external_links_container">
-            <div className="navigation">
-            <Link to="/">{ this.props.current_view === 'Home' ? <p className="bold_nav">Home</p> : <p onClick={ () => {this.props.adjustView('Home');} }>Home</p> }</Link>
-            <Link to="/collections/accessories">{ this.props.current_view === 'Accessories' ? <p className="bold_nav">Accessories</p> : <p onClick={ () => {this.props.adjustView('Accessories')} }>Accessories</p> }</Link>
-            <Link to="/collections/denim">{ this.props.current_view === 'Denim' ? <p className="bold_nav">Denim</p> : <p onClick={ () => this.props.adjustView('Denim') }>Denim</p> }</Link>
-            <Link to="/collections/footwear">{ this.props.current_view === 'Footwear' ? <p className="bold_nav">Footwear</p> : <p onClick={ () => this.props.adjustView('Footwear') }>Footwear</p> }</Link>
-            <Link to="/collections/jeans">{ this.props.current_view === 'Jeans' ? <p className="bold_nav">Jeans</p> : <p onClick={ () => this.props.adjustView('Jeans') }>Jeans</p> }</Link>
-            <Link to="/collections/outerwear">{ this.props.current_view === 'Outerwear' ? <p className="bold_nav">Outerwear</p> : <p onClick={ () => this.props.adjustView('Outerwear') }>Outerwear</p> }</Link>
-            <Link to="/collections/pants">{ this.props.current_view === 'Pants' ? <p className="bold_nav">Pants</p> : <p onClick={ () => this.props.adjustView('Pants') }>Pants</p> }</Link>
-            <Link to="/collections/shirts">{ this.props.current_view === 'Shirts' ? <p className="bold_nav">Shirts</p> : <p onClick={ () => this.props.adjustView('Shirts') }>Shirts</p> }</Link>
-            <Link to="/collections/t-shirts">{ this.props.current_view === 'T-Shirts' ? <p className="bold_nav">T-Shirts</p> : <p onClick={ () => this.props.adjustView('T-Shirts') }>T-Shirts</p> }</Link>
-            <Link to="/collections/shorts">{ this.props.current_view === 'Shorts' ? <p className="bold_nav">Shorts</p> : <p onClick={ () => this.props.adjustView('Shorts') }>Shorts</p> }</Link>
+          <div className="navigation_and_external_links_container_1">
+            <div className="hamburger_wrapper">
+              <div className="hamburger_container" onClick={this.expandMenu}>
+                <div className="hamburger"></div>
+                <div className="hamburger"></div>
+                <div className="hamburger"></div>
+              </div>
+            </div>
+            {this.state.open ? 
+            <div className="navigation_1">
+              <Link to="/">{ this.props.current_view === 'Home' ? <p className="bold_nav">Home</p> : <p className="light_nav" onClick={ () => {this.props.adjustView('Home'); this.expandMenu();} }>Home</p> }</Link>
+              <Link to="/collections/accessories">{ this.props.current_view === 'Accessories' ? <p className="bold_nav">Accessories</p> : <p className="light_nav" onClick={ () => {this.props.adjustView('Accessories'); this.expandMenu();} }>Accessories</p> }</Link>
+              <Link to="/collections/denim">{ this.props.current_view === 'Denim' ? <p className="bold_nav">Denim</p> : <p className="light_nav" onClick={ () => {this.props.adjustView('Denim'); this.expandMenu();} }>Denim</p> }</Link>
+              <Link to="/collections/footwear">{ this.props.current_view === 'Footwear' ? <p className="bold_nav">Footwear</p> : <p className="light_nav" onClick={ () => {this.props.adjustView('Footwear'); this.expandMenu();} }>Footwear</p> }</Link>
+              <Link to="/collections/jeans">{ this.props.current_view === 'Jeans' ? <p className="bold_nav">Jeans</p> : <p className="light_nav" onClick={ () => {this.props.adjustView('Jeans'); this.expandMenu();} }>Jeans</p> }</Link>
+              <Link to="/collections/outerwear">{ this.props.current_view === 'Outerwear' ? <p className="bold_nav">Outerwear</p> : <p className="light_nav" onClick={ () => {this.props.adjustView('Outerwear'); this.expandMenu();} }>Outerwear</p> }</Link>
+              <Link to="/collections/pants">{ this.props.current_view === 'Pants' ? <p className="bold_nav">Pants</p> : <p className="light_nav" onClick={ () => {this.props.adjustView('Pants'); this.expandMenu();} }>Pants</p> }</Link>
+              <Link to="/collections/shirts">{ this.props.current_view === 'Shirts' ? <p className="bold_nav">Shirts</p> : <p className="light_nav" onClick={ () => {this.props.adjustView('Shirts'); this.expandMenu();} }>Shirts</p> }</Link>
+              <Link to="/collections/t-shirts">{ this.props.current_view === 'T-Shirts' ? <p className="bold_nav">T-Shirts</p> : <p className="light_nav" onClick={ () => {this.props.adjustView('T-Shirts'); this.expandMenu();} }>T-Shirts</p> }</Link>
+              <Link to="/collections/shorts">{ this.props.current_view === 'Shorts' ? <p className="bold_nav">Shorts</p> : <p className="light_nav" onClick={ () => {this.props.adjustView('Shorts'); this.expandMenu();} }>Shorts</p> }</Link>
+            </div>
+            : null}
+          </div>
+          <div className="navigation_and_external_links_container_2">
+            <div className="navigation_2">
+              <Link to="/">{ this.props.current_view === 'Home' ? <p className="bold_nav">Home</p> : <p onClick={ () => {this.props.adjustView('Home');} }>Home</p> }</Link>
+              <Link to="/collections/accessories">{ this.props.current_view === 'Accessories' ? <p className="bold_nav">Accessories</p> : <p onClick={ () => {this.props.adjustView('Accessories')} }>Accessories</p> }</Link>
+              <Link to="/collections/denim">{ this.props.current_view === 'Denim' ? <p className="bold_nav">Denim</p> : <p onClick={ () => this.props.adjustView('Denim') }>Denim</p> }</Link>
+              <Link to="/collections/footwear">{ this.props.current_view === 'Footwear' ? <p className="bold_nav">Footwear</p> : <p onClick={ () => this.props.adjustView('Footwear') }>Footwear</p> }</Link>
+              <Link to="/collections/jeans">{ this.props.current_view === 'Jeans' ? <p className="bold_nav">Jeans</p> : <p onClick={ () => this.props.adjustView('Jeans') }>Jeans</p> }</Link>
+              <Link to="/collections/outerwear">{ this.props.current_view === 'Outerwear' ? <p className="bold_nav">Outerwear</p> : <p onClick={ () => this.props.adjustView('Outerwear') }>Outerwear</p> }</Link>
+              <Link to="/collections/pants">{ this.props.current_view === 'Pants' ? <p className="bold_nav">Pants</p> : <p onClick={ () => this.props.adjustView('Pants') }>Pants</p> }</Link>
+              <Link to="/collections/shirts">{ this.props.current_view === 'Shirts' ? <p className="bold_nav">Shirts</p> : <p onClick={ () => this.props.adjustView('Shirts') }>Shirts</p> }</Link>
+              <Link to="/collections/t-shirts">{ this.props.current_view === 'T-Shirts' ? <p className="bold_nav">T-Shirts</p> : <p onClick={ () => this.props.adjustView('T-Shirts') }>T-Shirts</p> }</Link>
+              <Link to="/collections/shorts">{ this.props.current_view === 'Shorts' ? <p className="bold_nav">Shorts</p> : <p onClick={ () => this.props.adjustView('Shorts') }>Shorts</p> }</Link>
             </div>
           </div>
           <div className="main_display_area">
@@ -140,20 +178,22 @@ class Overall extends Component {
 
         <section className="links_and_be_in_the_know">
           <div className="links_container">
-            <p>Links</p>
-            <Link to="/search"><p>Search</p></Link>
-            <Link to="/links/news"><p>News</p></Link>
-            <Link to="/links/our-story"><p>Our story</p></Link>
-            <Link to="/links/faq"><p>FAQ</p></Link>
-            <Link to="/links/return-policy"><p>Return Policy</p></Link>
-            <Link to="/links/contact-us"><p>Contact us</p></Link>
+            <p className="bottom_links_header">Links</p>
+            <div className="bottom_links_container">
+              <Link to="/search"><p className="bottom_links">Search</p></Link>
+              <Link to="/links/news"><p className="bottom_links">News</p></Link>
+              <Link to="/links/our-story"><p className="bottom_links">Our story</p></Link>
+              <Link to="/links/faq"><p className="bottom_links">FAQ</p></Link>
+              <Link to="/links/return-policy"><p className="bottom_links">Return Policy</p></Link>
+              <Link to="/links/contact-us"><p className="bottom_links">Contact us</p></Link>
+            </div>
           </div>
           <div className="be_in_the_know_container">
-            <p>Be in the know</p>
-            <p>Sign up for the latest news, offers and styles</p>
+            <p className="be_in_the_know_header">Be in the know</p>
+            <p className="be_in_the_know_text">Sign up for the latest news, offers and styles</p>
             <div className="bitn_input_and_submit_button_container">
-              <input value={this.state.email} onChange={this.handleEmailInput} placeholder="Your email"/>
-              <button onClick={this.handleClickOfSubmit}>SUBSCRIBE</button>
+              <input value={this.state.email} onChange={this.handleEmailInput} className="your_email_input_field" placeholder="Your email"/>
+              <button onClick={this.handleClickOfSubmit} className="subscribe_button">SUBSCRIBE</button>
             </div>
           </div>
         </section>

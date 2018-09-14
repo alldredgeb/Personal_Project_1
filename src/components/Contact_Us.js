@@ -12,7 +12,7 @@ class Contact_Us extends Component {
       email: '',
       phone: '',
       message: '',
-      display: false
+      display: true
     };
     this.handleNameInput = this.handleNameInput.bind(this);
     this.handleEmailInput = this.handleEmailInput.bind(this);
@@ -66,8 +66,6 @@ class Contact_Us extends Component {
             <p className="contact_us_breadcrumb_description">Contact us</p>
           </div>
         </header>
-
-        <p className="contact_us_name_header">Contact us is under construction</p> 
 
         {this.state.display === true ? 
         <div>

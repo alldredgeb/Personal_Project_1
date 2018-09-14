@@ -111,21 +111,10 @@ class Cart extends Component {
         {this.props.products_in_cart[0] || this.state.checked_out ? null :
         <div>
           <p className="cart_name_header">Shopping Cart</p>
-          <p>Your cart is currently empty.</p>
-          <p>Continue browsing <Link to="/">here.</Link></p>
+          <p className="cart_empty_text">Your cart is currently empty.</p>
+          <p className="cart_continue_browsing_text">Continue browsing <Link to="/">here.</Link></p>
         </div>
          }
-
-        {!this.props.products_in_cart[0] ? null :
-        <div className="filled_cart_headers_container">
-          <p>Product</p>
-          <div className="filled_cart_price_quantity_total_headers_container">
-            <p>Price</p>
-            <p>Quantity</p>
-            <p>Total</p>
-          </div>
-        </div>
-        }
 
          {!this.state.checked_out ? null :
         <div>
@@ -133,26 +122,57 @@ class Cart extends Component {
           <p>If you wish to continue browsing, click <Link to="/">here.</Link></p>
         </div>
          }
+        
+        <div className="below_seven_hundred_and_fifty">
+          {this.props.products_in_cart.map ( obj => {
+            return (
+            <div key={obj.id} className="filled_cart_actual_product_item_container_1">
+              <div className="cart_product_box_1">
+                <Link to={`/product/${obj.product_id}`}><img className="cart_product_image_1" src={obj.img_url} alt="Cart Item"/></Link>
+                <Link to={`/product/${obj.product_id}`}><p className="cart_product_description_1">{obj.description}</p></Link>
+                <p className="cart_product_details_1">{obj.colour} / {obj.size}</p>
+                <p className="link_to_remove_cart_item_1" onClick={ () => this.deleteFromCartOnClick(obj.product_id) }>Remove</p>
+              </div>
+              <div className="cart_product_price_container_1">
+                <p className="cart_product_price_header_1">Price</p>
+                <p className="cart_product_price_1">{obj.price}</p>
+              </div>
+              <div className="cart_product_quantity_container_1">
+                <p className="cart_product_quantity_header_1">Quantity</p>
+                <input className="cart_product_quantity_1" value={obj.quantity} onChange={(event) => this.updateQuantityOnChange(event, obj.product_id, obj.price)}/>
+              </div>
+              <div className="cart_product_total_container_1">
+                <p className="cart_product_total_header_1">Total</p>
+                <p className="cart_product_total_1">{obj.total}</p>
+              </div>
+            </div>
+            )
+          })}
+        </div>
 
-        {this.props.products_in_cart.map ( obj => {
-          return (
-          <div key={obj.id} className="filled_cart_actual_product_item_container">
-            <Link to={`/product/${obj.product_id}`}><img className="cart_item_image" src={obj.img_url} alt="Cart Item"/></Link>
-            <div className="cart_item_details_container">
-              <Link to={`/product/${obj.product_id}`}><p className="cart_item_description">{obj.description}</p></Link>
-              <p className="cart_item_color">{obj.colour}</p>
-              <p>/</p>
-              <p className="cart_item_size">{obj.size}</p>
-              <p className="link_to_remove_cart_item" onClick={ () => this.deleteFromCartOnClick(obj.product_id) }>Remove</p>
-            </div>
-            <div className="cart_item_price_quantity_total_container">
-              <p className="cart_item_price">{obj.price}</p>
-              <input className="cart_item_quantity" value={obj.quantity} onChange={(event) => this.updateQuantityOnChange(event, obj.product_id, obj.price)}/>
-              <p className="cart_item_total">{obj.total}</p>
-            </div>
+        <div className="seven_hundred_fifty_and_above">
+          <div className="cart_expanded_headers">
+            <p lassName="product_header_2">Product</p>
+            <p lassName="price_header_2">Price</p>
+            <p className="quantity_header_2">Quantity</p>
+            <p className="total_header_2">Total</p>
           </div>
-          )
-        })}
+          {this.props.products_in_cart.map ( obj => {
+            return (
+            <div key={obj.id} className="filled_cart_actual_product_item_container_2">
+              <Link to={`/product/${obj.product_id}`}><img className="cart_product_image_2" src={obj.img_url} alt="Cart Item"/></Link>
+              <div className="cart_product_details_container_2">
+                <Link to={`/product/${obj.product_id}`}><p className="cart_product_description_2">{obj.description}</p></Link>
+                <p className="cart_product_details_2">{obj.colour} / {obj.size}</p>
+                <p className="link_to_remove_cart_item_2" onClick={ () => this.deleteFromCartOnClick(obj.product_id) }>Remove</p>
+              </div>
+              <p className="cart_product_price_2">{obj.price}</p>
+              <input className="cart_product_quantity_2" value={obj.quantity} onChange={(event) => this.updateQuantityOnChange(event, obj.product_id, obj.price)}/>
+              <p className="cart_product_total_2">{obj.total}</p>
+            </div>
+            )
+          })}
+        </div>
 
         {!this.props.products_in_cart[0] ? null :
         <div className="instructions_subtotal_refresh_redirect_checkout_container">
@@ -161,12 +181,15 @@ class Cart extends Component {
             <textarea className="special_instructions_message_textarea"></textarea>
           </div>
           <div className="subtotal_and_buttons_container">
-            <p>Subtotal {this.state.subtotal}</p>
+            <p className="subtotal_header">Subtotal {this.state.subtotal}</p>
+            <p className="refresh_instructions">Click 'refresh' (below) to update subtotal</p>
             <div className="refresh_and_redirect_buttons_container">
-              <img className="refresh_icon" src={refresh_icon} alt="Refresh Icon" onClick={ () => this.getCartItemsSubtotal() }/>
-              <Link to="/"><button>CONTINUE SHOPPING</button></Link>
+              <div className="refresh_icon_container">
+                <img className="refresh_icon" src={refresh_icon} alt="Refresh Icon" onClick={ () => this.getCartItemsSubtotal() }/>
+              </div>
+              <Link to="/"><button className="continue_button">CONTINUE SHOPPING</button></Link>
             </div>
-            <button onClick={ () => this.cartCheckout() }>CHECK OUT</button>
+            <button className="checkout_button" onClick={ () => this.cartCheckout() }>CHECK OUT</button>
           </div>
         </div>
         }
