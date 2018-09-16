@@ -59,21 +59,25 @@ class Contact_Us extends Component {
     return (
       <div className="overall_contact_us_container">
       
-        <header className="contact_us_header">
-          <div className="contact_us_breadcrumb">
-            <Link to="/"><p className="contact_us_breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
+        <header className="extra_links_header">
+          <div className="extra_links_breadcrumb">
+            <Link to="/"><p className="extra_links_breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
             <div className="nav_between_symbol">›</div>
-            <p className="contact_us_breadcrumb_description">Contact us</p>
+            <p className="extra_links_breadcrumb_description">Contact Us</p>
           </div>
         </header>
 
+        <div className="extra_links_header_title_container">
+          <p className="extra_links_name_header">Contact Us</p>
+        </div>
+
         {this.state.display === true ? 
-        <div>
-        <input className="contact_us_name_input" value={this.state.name} onChange={this.handleNameInput} placeholder="Name"/>
-        <input className="contact_us_email_input" value={this.state.email} onChange={this.handleEmailInput} placeholder="Email"/>
-        <input className="contact_us_phone_number_input" value={this.state.phone} onChange={this.handlePhoneInput} placeholder="Phone Number"/>
-        <textarea className="contact_us_message_textarea" value={this.state.message} onChange={this.handleMessageInput} placeholder="Message"/>
-        <button className="contact_us_send_button" onClick={this.handleClickOfSubmit}>SEND</button>
+        <div className="contact_us_inputs_and_send_container">
+          <input className="contact_us_input" value={this.state.name} onChange={this.handleNameInput} placeholder="Name"/>
+          <input className="contact_us_input" value={this.state.email} onChange={this.handleEmailInput} placeholder="Email"/>
+          <input className="contact_us_input" value={this.state.phone} onChange={this.handlePhoneInput} placeholder="Phone Number"/>
+          <textarea className="contact_us_textarea" value={this.state.message} onChange={this.handleMessageInput} placeholder="Message"/>
+          <button className="contact_us_send_button" onClick={this.handleClickOfSubmit}>SEND</button>
         </div>
         : null}
       

@@ -140,16 +140,16 @@ class Overall extends Component {
           </div>
           <div className="navigation_and_external_links_container_2">
             <div className="navigation_2">
-              <Link to="/">{ this.props.current_view === 'Home' ? <p className="bold_nav">Home</p> : <p onClick={ () => {this.props.adjustView('Home');} }>Home</p> }</Link>
-              <Link to="/collections/accessories">{ this.props.current_view === 'Accessories' ? <p className="bold_nav">Accessories</p> : <p onClick={ () => {this.props.adjustView('Accessories')} }>Accessories</p> }</Link>
-              <Link to="/collections/denim">{ this.props.current_view === 'Denim' ? <p className="bold_nav">Denim</p> : <p onClick={ () => this.props.adjustView('Denim') }>Denim</p> }</Link>
-              <Link to="/collections/footwear">{ this.props.current_view === 'Footwear' ? <p className="bold_nav">Footwear</p> : <p onClick={ () => this.props.adjustView('Footwear') }>Footwear</p> }</Link>
-              <Link to="/collections/jeans">{ this.props.current_view === 'Jeans' ? <p className="bold_nav">Jeans</p> : <p onClick={ () => this.props.adjustView('Jeans') }>Jeans</p> }</Link>
-              <Link to="/collections/outerwear">{ this.props.current_view === 'Outerwear' ? <p className="bold_nav">Outerwear</p> : <p onClick={ () => this.props.adjustView('Outerwear') }>Outerwear</p> }</Link>
-              <Link to="/collections/pants">{ this.props.current_view === 'Pants' ? <p className="bold_nav">Pants</p> : <p onClick={ () => this.props.adjustView('Pants') }>Pants</p> }</Link>
-              <Link to="/collections/shirts">{ this.props.current_view === 'Shirts' ? <p className="bold_nav">Shirts</p> : <p onClick={ () => this.props.adjustView('Shirts') }>Shirts</p> }</Link>
-              <Link to="/collections/t-shirts">{ this.props.current_view === 'T-Shirts' ? <p className="bold_nav">T-Shirts</p> : <p onClick={ () => this.props.adjustView('T-Shirts') }>T-Shirts</p> }</Link>
-              <Link to="/collections/shorts">{ this.props.current_view === 'Shorts' ? <p className="bold_nav">Shorts</p> : <p onClick={ () => this.props.adjustView('Shorts') }>Shorts</p> }</Link>
+              <Link to="/">{ this.props.current_view === 'Home' ? <p className="bold_nav_2">Home</p> : <p className="light_nav_2" onClick={ () => {this.props.adjustView('Home');} }>Home</p> }</Link>
+              <Link to="/collections/accessories">{ this.props.current_view === 'Accessories' ? <p className="bold_nav_2">Accessories</p> : <p className="light_nav_2" onClick={ () => {this.props.adjustView('Accessories')} }>Accessories</p> }</Link>
+              <Link to="/collections/denim">{ this.props.current_view === 'Denim' ? <p className="bold_nav_2">Denim</p> : <p className="light_nav_2" onClick={ () => this.props.adjustView('Denim') }>Denim</p> }</Link>
+              <Link to="/collections/footwear">{ this.props.current_view === 'Footwear' ? <p className="bold_nav_2">Footwear</p> : <p className="light_nav_2" onClick={ () => this.props.adjustView('Footwear') }>Footwear</p> }</Link>
+              <Link to="/collections/jeans">{ this.props.current_view === 'Jeans' ? <p className="bold_nav_2">Jeans</p> : <p className="light_nav_2" onClick={ () => this.props.adjustView('Jeans') }>Jeans</p> }</Link>
+              <Link to="/collections/outerwear">{ this.props.current_view === 'Outerwear' ? <p className="bold_nav_2">Outerwear</p> : <p className="light_nav_2" onClick={ () => this.props.adjustView('Outerwear') }>Outerwear</p> }</Link>
+              <Link to="/collections/pants">{ this.props.current_view === 'Pants' ? <p className="bold_nav_2">Pants</p> : <p className="light_nav_2" onClick={ () => this.props.adjustView('Pants') }>Pants</p> }</Link>
+              <Link to="/collections/shirts">{ this.props.current_view === 'Shirts' ? <p className="bold_nav_2">Shirts</p> : <p className="light_nav_2" onClick={ () => this.props.adjustView('Shirts') }>Shirts</p> }</Link>
+              <Link to="/collections/t-shirts">{ this.props.current_view === 'T-Shirts' ? <p className="bold_nav_2">T-Shirts</p> : <p className="light_nav_2" onClick={ () => this.props.adjustView('T-Shirts') }>T-Shirts</p> }</Link>
+              <Link to="/collections/shorts">{ this.props.current_view === 'Shorts' ? <p className="bold_nav_2">Shorts</p> : <p className="light_nav_2" onClick={ () => this.props.adjustView('Shorts') }>Shorts</p> }</Link>
             </div>
           </div>
           <div className="main_display_area">
@@ -180,12 +180,12 @@ class Overall extends Component {
           <div className="links_container">
             <p className="bottom_links_header">Links</p>
             <div className="bottom_links_container">
-              <Link to="/search"><p className="bottom_links">Search</p></Link>
-              <Link to="/links/news"><p className="bottom_links">News</p></Link>
-              <Link to="/links/our-story"><p className="bottom_links">Our story</p></Link>
-              <Link to="/links/faq"><p className="bottom_links">FAQ</p></Link>
-              <Link to="/links/return-policy"><p className="bottom_links">Return Policy</p></Link>
-              <Link to="/links/contact-us"><p className="bottom_links">Contact us</p></Link>
+              <Link to="/search"><p className="bottom_links" onClick={ () => {this.props.adjustView('Search'); this.closeMenu();} }>Search</p></Link>
+              <Link to="/links/news"><p className="bottom_links" onClick={ () => {this.props.adjustView('News'); this.closeMenu();} }>News</p></Link>
+              <Link to="/links/our-story"><p className="bottom_links" onClick={ () => {this.props.adjustView('Our story'); this.closeMenu();} }>Our story</p></Link>
+              <Link to="/links/faq"><p className="bottom_links" onClick={ () => {this.props.adjustView('FAQ'); this.closeMenu();} }>FAQ</p></Link>
+              <Link to="/links/return-policy"><p className="bottom_links" onClick={ () => {this.props.adjustView('Return Policy'); this.closeMenu();} }>Return Policy</p></Link>
+              <Link to="/links/contact-us"><p className="bottom_links" onClick={ () => {this.props.adjustView('Contact us'); this.closeMenu();} }>Contact us</p></Link>
             </div>
           </div>
           <div className="be_in_the_know_container">
@@ -200,7 +200,7 @@ class Overall extends Component {
 
         <footer>
           <div className="footer_note_container">
-            <p className="footer_note">Partial clone by Benjamin Alldredge. Original website by <a href="https://simpletheme.myshopify.com/">Shopify Shirts.</a></p>
+            <p className="footer_note">Partial clone by Benjamin Alldredge. Original website by <a href="https://simpletheme.myshopify.com/" className="shopify_hyperlink">Shopify Shirts.</a></p>
             <p></p>
           </div>
         </footer>

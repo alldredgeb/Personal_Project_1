@@ -112,14 +112,14 @@ class Cart extends Component {
         <div>
           <p className="cart_name_header">Shopping Cart</p>
           <p className="cart_empty_text">Your cart is currently empty.</p>
-          <p className="cart_continue_browsing_text">Continue browsing <Link to="/">here.</Link></p>
+          <p className="cart_continue_browsing_text" onClick={ () => {this.props.adjustView('Home');} }>Continue browsing <Link to="/">here.</Link></p>
         </div>
          }
 
          {!this.state.checked_out ? null :
         <div>
           <p>Thank you for your purchase!</p>
-          <p>If you wish to continue browsing, click <Link to="/">here.</Link></p>
+          <p onClick={ () => {this.props.adjustView('Home');} }>If you wish to continue browsing, click <Link to="/">here.</Link></p>
         </div>
          }
         
@@ -151,24 +151,45 @@ class Cart extends Component {
         </div>
 
         <div className="seven_hundred_fifty_and_above">
-          <div className="cart_expanded_headers">
-            <p lassName="product_header_2">Product</p>
-            <p lassName="price_header_2">Price</p>
-            <p className="quantity_header_2">Quantity</p>
-            <p className="total_header_2">Total</p>
-          </div>
+          {!this.props.products_in_cart[0] ? null : 
+            <div className="cart_expanded_headers">
+              <div className="product_header_2_container">
+                <p className="product_header_2">Product</p>
+              </div>
+              <div className="price_quantity_container">
+                <p className="price_header_2">Price</p>
+                <p className="quantity_header_2">Quantity</p>
+              </div>
+              <div className="total_header_2_container_for_real">
+                <p className="total_header_2">Total</p>
+              </div>
+            </div>
+          }
+
           {this.props.products_in_cart.map ( obj => {
             return (
             <div key={obj.id} className="filled_cart_actual_product_item_container_2">
-              <Link to={`/product/${obj.product_id}`}><img className="cart_product_image_2" src={obj.img_url} alt="Cart Item"/></Link>
-              <div className="cart_product_details_container_2">
-                <Link to={`/product/${obj.product_id}`}><p className="cart_product_description_2">{obj.description}</p></Link>
-                <p className="cart_product_details_2">{obj.colour} / {obj.size}</p>
-                <p className="link_to_remove_cart_item_2" onClick={ () => this.deleteFromCartOnClick(obj.product_id) }>Remove</p>
+              <div className="cart_product_image_and_description_color_size_remove_container_2">
+                <div className="cart_product_image_2_container">
+                  <Link to={`/product/${obj.product_id}`}><img className="cart_product_image_2" src={obj.img_url} alt="Cart Item"/></Link>
+                </div>
+                <div className="cart_product_details_container_2">
+                  <Link to={`/product/${obj.product_id}`}><p className="cart_product_description_2">{obj.description}</p></Link>
+                  <p className="cart_product_details_2">{obj.colour} / {obj.size}</p>
+                  <p className="link_to_remove_cart_item_2" onClick={ () => this.deleteFromCartOnClick(obj.product_id) }>Remove</p>
+                </div>
               </div>
-              <p className="cart_product_price_2">{obj.price}</p>
-              <input className="cart_product_quantity_2" value={obj.quantity} onChange={(event) => this.updateQuantityOnChange(event, obj.product_id, obj.price)}/>
-              <p className="cart_product_total_2">{obj.total}</p>
+              <div className="actual_price_quantity_container">
+                <div className="test_one">
+                  <p className="cart_product_price_2">{obj.price}</p>
+                </div>
+                <div className="test_two">
+                  <input className="cart_product_quantity_2" value={obj.quantity} onChange={(event) => this.updateQuantityOnChange(event, obj.product_id, obj.price)}/>
+                </div>
+              </div>
+              <div className="actual_total_header_2_container_for_real">
+                <p className="cart_product_total_2">{obj.total}</p>
+              </div>
             </div>
             )
           })}

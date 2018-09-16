@@ -17,17 +17,21 @@ class FAQ extends Component {
     return (
       <div className="overall_faq_container">
       
-        <header className="faq_header">
-          <div className="faq_breadcrumb">
-            <Link to="/"><p className="faq_breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
+        <header className="extra_links_header">
+          <div className="extra_links_breadcrumb">
+            <Link to="/"><p className="extra_links_breadcrumb_link_to_home" onClick={ () => this.props.adjustView('Home') }>Home</p></Link>
             <div className="nav_between_symbol">›</div>
-            <p className="faq_breadcrumb_description">FAQ</p>
+            <p className="extra_links_breadcrumb_description">FAQ</p>
           </div>
         </header>
 
+        <div className="extra_links_header_title_container">
+          <p className="extra_links_name_header">FAQ</p>
+        </div>
+
         {this.state.display === true ? 
         <div>
-        <p className="qu">Do you ship overseas?</p>
+        <p className="q1">Do you ship overseas?</p>
         <p className="an">Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>
 
         <p className="qu">How long will it take to get my order?</p>
@@ -46,7 +50,7 @@ class FAQ extends Component {
         <p className="an">Yes! Just enter your email here, and you’ll be added to our subscription list. You’ll be sent updates, exclusive offers, and much more.</p>
 
         <p className="qu">Are these Q&As real?</p>
-        <p className="an">No. This is demonstration content, designed to showcase how these page could look with your own content.</p>
+        <p className="an7">No. This is demonstration content, designed to showcase how these page could look with your own content.</p>
         </div>
         : null}
 

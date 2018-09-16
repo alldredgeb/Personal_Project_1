@@ -100,7 +100,8 @@ class Individual_Product_Display extends Component {
           </div>
         </header>
 
-        <section className="individual_and_alternate_product_images_container">
+        <section className="individual_images_and_details_container">
+        <div className="individual_and_alternate_product_images_container">
           <div className="individual_product_image_container">
             <img className="individual_product_image" src={this.state.current_product_image_displayed} alt="Individual Product"/>
           </div>
@@ -110,9 +111,9 @@ class Individual_Product_Display extends Component {
             <img className="alternate_product_image" src={this.state.all_product_images[1]} alt="product_image_number_two" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[1]) }/>
             <img className="alternate_product_image" src={this.state.all_product_images[2]} alt="product_image_number_three" onClick={ () => this.changeCurrentImageOnClick(this.state.all_product_images[2]) }/>
           </div>
-        </section>
+        </div>
 
-        <section className="individual_product_details_container">
+        <div className="individual_product_details_container">
           <div className="individual_product_details">
             <p className="individual_product_description">{this.state.current_product_displayed.description}</p>
             <p className="individual_product_price">{this.state.current_product_displayed.price}</p>
@@ -172,11 +173,12 @@ class Individual_Product_Display extends Component {
              this.props.logged_in ? <button className="individual_product_add_to_cart_button" onClick={this.addToCart}>ADD TO CART</button> : <button className="not_logged_in_button">PLEASE LOG IN</button> : 
              <div className="view_cart_and_continue_shopping_buttons_container">
               <Link to="/cart"><button className="individual_product_view_cart_button">VIEW CART</button></Link>
-              <Link to="/"><button className="individual_product_view_continue_shopping_button">CONTINUE SHOPPING</button></Link>
+              <Link to="/"><button className="individual_product_view_continue_shopping_button" onClick={ () => {this.props.adjustView('Home');} }>CONTINUE SHOPPING</button></Link>
              </div>
             }
 
           </div>
+        </div>
         </section>
 
         </div>
