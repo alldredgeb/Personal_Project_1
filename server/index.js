@@ -13,7 +13,7 @@ const port = 3008;
 
 //TOP LEVEL MIDDLEWARE
 app.use(bodyParser.json());
-// app.use( express.static( `${__dirname}/../build` ) );
+app.use(express.static(__dirname + '/../build' ) );
 
 app.use(session({
   secret: process.env.SECRET,
@@ -79,13 +79,13 @@ app.post('/api/add_item_to_cart', (req, res) => {
 
 /////Read/////
 app.get('/api/auth/login', passport.authenticate('auth0', {
-  successRedirect: 'http://localhost:3000/#/', 
-  failureRedirect: 'http://localhost:3000/#/'
+  successRedirect: process.env.SUCCESS_REDIRECT,
+  failureRedirect: process.env.FAILURE_REDIRECT
 }))
 
 app.get('/api/auth/logout', (req, res) => {
   req.logOut();
-  res.redirect(`https://leroy-jones.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3000&client_id=${process.env.CLIENT_ID}`)
+  res.redirect(process.env.AUTH_ZERO_RETURN)
 })
 
 app.get('/api/get_all_user_info', (req, res) => {
