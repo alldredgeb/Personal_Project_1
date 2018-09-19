@@ -9,7 +9,7 @@ require('dotenv').config();
 
 //VARIABLES
 const app = express();
-const port = 3008;
+const port = 3009;
 
 //TOP LEVEL MIDDLEWARE
 app.use(bodyParser.json());
